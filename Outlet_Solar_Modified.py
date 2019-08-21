@@ -74,7 +74,7 @@ def normalCounting():
     old_signal = pulse_signal.value
     
 def set_totalizer():
-    totalizerVal.value = round(0.064 * int (cumulative_counting.value)-1.1064,1)
+    totalizerVal.value = getTodayTotalizer() + round(0.064 * int (cumulative_counting.value)-1.1064,1)
     setByDay( totalizerVal.value )
         
 def operation_status():
