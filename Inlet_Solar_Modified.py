@@ -76,7 +76,7 @@ def normalCounting():
     old_signal = pulse_signal.value
     
 def set_totalizer():
-    pengisianVal.value = round(0.24 * int (cumulative_counting.value),2)
+    pengisianVal.value = getTodayTotalizer() + round(0.24 * int (cumulative_counting.value),2)
     setByDay( pengisianVal.value )
 
 # Calling Count Function
