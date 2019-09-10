@@ -3,9 +3,13 @@ from gpiozero import Button, LED
 from time import sleep
 from datetime import datetime
 import sqlite3
+import time
+import threading
+
 conn = sqlite3.connect('flowmeter.db')
 jenis= "minyak"
 posisi= "inlet"
+loopDBDuration = 30
 
 # Port Initialization #
 pulse_signal = Button(8, pull_up=False)
@@ -77,8 +81,13 @@ def normalCounting():
     
 def set_totalizer():
     pengisianVal.value = getTodayTotalizer() + int(0.047 * int (cumulative_counting.value))
-    setByDay( pengisianVal.value )
+    
     #pengisianVal.value = round(0.049 * int (cumulative_counting.value),0)
+
+def updateValue():
+    setByDay( pengisianVal.value )
+    t = threading.Timer(loopDBDuration, updateValue)
+    t.start()
 
 # Calling Count Function
 #pulse_signal.when_pressed = normalCounting
@@ -128,6 +137,10 @@ window.hide()
 #button_reset.bg="white"
 #button_reset.text_color="Black"
 #button_reset.width=8
+
+if __name__ == '__main__':
+    t = threading.Timer(loopDBDuration, updateValue)
+    t.start()
 
 app.full_screen = True
 app.display()
